@@ -28,6 +28,8 @@ GitHub Pages: https://allilady.github.io/viral-scope-ai/
 |---|---|---|
 | video1 | B 类：高播放低转化，适合定位信任、卖点和行动引导断点。 | https://allilady.github.io/viral-scope-ai/video1/showcase.html |
 | video2 | A 类：高播放高转化，适合提炼可复用的带货内容结构。 | https://allilady.github.io/viral-scope-ai/video2/showcase.html |
+| video3 | C 类：低播放但转化尚可，适合分析垂类达人和精准人群匹配。 | https://allilady.github.io/viral-scope-ai/video3/showcase.html |
+| video4 | D 类：双低，适合定位达人匹配、内容信任和卖点表达问题。 | https://allilady.github.io/viral-scope-ai/video4/showcase.html |
 
 ## Results
 

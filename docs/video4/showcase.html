@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ViralScope AI | video4</title>
+  <style>
+    :root {
+      --bg: #151515;
+      --text: #f2efe9;
+      --muted: #aaa39b;
+      --line: #3b3937;
+      --accent: #ff6a3d;
+      --accent-2: #e650b6;
+      --good: #4fd18b;
+      --good-soft: rgba(79, 209, 139, 0.12);
+      --warn: #ff9d54;
+      --warn-soft: rgba(255, 106, 61, 0.12);
+      --gold: #ffd18c;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 16% 0%, rgba(230, 80, 182, 0.16), transparent 32rem),
+        radial-gradient(circle at 85% 12%, rgba(255, 106, 61, 0.12), transparent 28rem),
+        var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.65;
+    }
+
+    .page {
+      width: min(1100px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 56px 0 80px;
+    }
+
+    .hero {
+      border-bottom: 1px solid rgba(255, 106, 61, 0.42);
+      padding-bottom: 34px;
+      margin-bottom: 44px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--accent);
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(40px, 6vw, 72px);
+      line-height: 0.95;
+      font-weight: 900;
+    }
+
+    .subtitle {
+      max-width: 820px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(100px, 1fr));
+      gap: 1px;
+      margin-top: 32px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .metric { background: rgba(26, 26, 26, 0.92); padding: 18px; }
+
+    .metric strong {
+      display: block;
+      color: var(--gold);
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: 25px;
+      line-height: 1.1;
+    }
+
+    .metric span { display: block; margin-top: 6px; color: var(--muted); font-size: 13px; }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 0 0 22px;
+      font-size: 24px;
+      font-weight: 850;
+    }
+
+    .section-title::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: linear-gradient(90deg, currentColor, transparent);
+      opacity: 0.5;
+    }
+
+    /* keyframe filmstrip */
+    .filmstrip {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      margin-bottom: 60px;
+    }
+
+    .frame { flex: 0 0 auto; margin: 0; width: 96px; }
+
+    .frame img {
+      display: block;
+      width: 96px;
+      aspect-ratio: 9 / 16;
+      object-fit: cover;
+      background: #0f0f0f;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .frame figcaption {
+      margin-top: 6px;
+      text-align: center;
+      color: var(--accent);
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: 12px;
+    }
+
+    /* good / warn blocks */
+    .block { margin-bottom: 62px; }
+    .block.good { color: var(--good); }
+    .block.warn { color: var(--warn); }
+
+    .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+
+    .card {
+      color: var(--text);
+      padding: 24px 26px;
+      border-radius: 4px;
+    }
+
+    .good .card {
+      background: var(--good-soft);
+      border-left: 3px solid var(--good);
+    }
+
+    .warn .card {
+      background: var(--warn-soft);
+      border-left: 3px solid var(--warn);
+    }
+
+    .card > h3 {
+      margin: 0 0 14px;
+      font-size: 18px;
+    }
+
+    .good .card > h3 { color: var(--good); }
+    .warn .card > h3 { color: var(--warn); }
+
+    .card p { margin: 0 0 12px; color: var(--text); font-size: 15px; }
+    .card p.empty { color: var(--muted); }
+    .card h4 { margin: 16px 0 8px; font-size: 15px; color: var(--gold); }
+    .card ul, .card ol { margin: 0 0 12px; padding-left: 20px; }
+    .card li { margin-bottom: 8px; color: var(--text); font-size: 15px; }
+    .card code {
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 1px 5px;
+    }
+
+    .conclusion {
+      font-size: 17px;
+      color: var(--text);
+      border-left: 3px solid var(--warn);
+      background: var(--warn-soft);
+      padding: 18px 22px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .metrics { grid-template-columns: repeat(3, 1fr); }
+      .cards { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">ViralScope AI / video4</p>
+      <h1>ViralScope AI</h1>
+      <p class="subtitle">TikTok / tools / Greenworks 80V Trimmer  breakdown — for homeowners: what&#x27;s worth copying first, then where conversion stalls.</p>
+      <div class="metrics" aria-label="Key metrics">
+        <div class="metric"><strong>883</strong><span>Views</span></div>
+        <div class="metric"><strong>3</strong><span>Likes</span></div>
+        <div class="metric"><strong>1</strong><span>Comments</span></div>
+        <div class="metric"><strong>1</strong><span>Saves</span></div>
+        <div class="metric"><strong>0</strong><span>Shares</span></div>
+        <div class="metric"><strong>0</strong><span>Orders</span></div>
+      </div>
+    </header>
+
+    <section aria-labelledby="frames-title">
+      <h2 class="section-title" id="frames-title" style="color: var(--accent-2);">Key Frames</h2>
+      <div class="filmstrip">
+        <figure class="frame">
+          <img src="frames/frame_0.0s.jpg" alt="Frame at 0.0s">
+          <figcaption>0.0s</figcaption>
+        </figure>
+        <figure class="frame">
+          <img src="frames/frame_0.5s.jpg" alt="Frame at 0.5s">
+          <figcaption>0.5s</figcaption>
+        </figure>
+        <figure class="frame">
+          <img src="frames/frame_1.0s.jpg" alt="Frame at 1.0s">
+          <figcaption>1.0s</figcaption>
+        </figure>
+        <figure class="frame">
+          <img src="frames/frame_1.5s.jpg" alt="Frame at 1.5s">
+          <figcaption>1.5s</figcaption>
+        </figure>
+        <figure class="frame">
+          <img src="frames/frame_2.0s.jpg" alt="Frame at 2.0s">
+          <figcaption>2.0s</figcaption>
+        </figure>
+        <figure class="frame">
+          <img src="frames/frame_2.5s.jpg" alt="Frame at 2.5s">
+          <figcaption>2.5s</figcaption>
+        </figure>
+        <figure class="frame">
+          <img src="frames/frame_3.0s.jpg" alt="Frame at 3.0s">
+          <figcaption>3.0s</figcaption>
+        </figure>
+        <figure class="frame">
+          <img src="frames/frame_5.0s.jpg" alt="Frame at 5.0s">
+          <figcaption>5.0s</figcaption>
+        </figure>
+        <figure class="frame">
+          <img src="frames/frame_8.0s.jpg" alt="Frame at 8.0s">
+          <figcaption>8.0s</figcaption>
+        </figure>
+        <figure class="frame">
+          <img src="frames/frame_12.0s.jpg" alt="Frame at 12.0s">
+          <figcaption>12.0s</figcaption>
+        </figure>
+        <figure class="frame">
+          <img src="frames/frame_17.0s.jpg" alt="Frame at 17.0s">
+          <figcaption>17.0s</figcaption>
+        </figure>
+        <figure class="frame">
+          <img src="frames/frame_29.0s.jpg" alt="Frame at 29.0s">
+          <figcaption>29.0s</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="block good" aria-labelledby="good-title">
+      <h2 class="section-title" id="good-title">✅ What's Working — Repeatable</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Repeatable Viral Formula</h3>
+          <p><strong>Reusable template structure:</strong></p>
+<ol><li><strong>Open on the mess or the payoff</strong></li></ol>
+<p>Example: show overgrown fence grass getting cut, or show the final crisp edge first.</p>
+<ol><li><strong>State the practical homeowner win in one sentence</strong></li></ol>
+<p>Example: “This battery trimmer cleaned my whole fence line without gas or cords.”</p>
+<ol><li><strong>Show one clear use case in tight close-up</strong></li></ol>
+<p>Example: trimming weeds at the fence base.</p>
+<ol><li><strong>Add the second use case that increases product value</strong></li></ol>
+<p>Example: flip to edger mode and clean the driveway edge.</p>
+<ol><li><strong>Drop one simple proof point</strong></li></ol>
+<p>Example: runtime, lighter handling, less noise, easy reload.</p>
+<ol><li><strong>End on visible result plus direct CTA</strong></li></ol>
+<p>Example: final clean edge, then “Link in bio for the current deal.”</p>
+<p>This formula is repeatable because it is built on:</p>
+<ul><li>visible yard problem</li><li>satisfying tool action</li><li>dual-function proof</li><li>one practical battery benefit</li><li>simple purchase instruction</li></ul>
+        </div>
+        <div class="card">
+          <h3>Our Brand Version</h3>
+          <p><strong>Ready-to-shoot script / shot list:</strong></p>
+<p><strong>Shot 1 (0.0s-1.0s):</strong> Tight close-up of the edger cutting a driveway line, debris kicking out.</p>
+<p><strong>Voiceover:</strong> “This is the cleanest edge I’ve gotten without touching a gas tool.”</p>
+<p><strong>Shot 2 (1.0s-2.5s):</strong> Quick cut to overgrown grass by fence before trimming.</p>
+<p><strong>On-screen text:</strong> “Fence line was getting out of control.”</p>
+<p><strong>Shot 3 (2.5s-5.0s):</strong> Close-up of trimmer clearing weeds at the fence base.</p>
+<p><strong>Voiceover:</strong> “The 80V trimmer has enough power to clear thick spots fast.”</p>
+<p><strong>Shot 4 (5.0s-7.0s):</strong> Medium shot of creator walking the yard with the tool.</p>
+<p><strong>Voiceover:</strong> “No cord, no gas smell, and way less noise.”</p>
+<p><strong>Shot 5 (7.0s-9.0s):</strong> Show switch into edging mode with a close-up of the handle/attachment area.</p>
+<p><strong>Voiceover:</strong> “Then I switched over and cleaned up the driveway edge.”</p>
+<p><strong>Shot 6 (9.0s-12.0s):</strong> Close-up edging pass with crisp line reveal.</p>
+<p><strong>On-screen text:</strong> “Trimmer + edger in one”</p>
+<p><strong>Shot 7 (12.0s-14.0s):</strong> Finished lawn edge and fence line result shot.</p>
+<p><strong>Voiceover:</strong> “If you want pro-looking lines without gas maintenance, this is the setup.”</p>
+<p><strong>Shot 8 (14.0s-16.0s):</strong> Product on lawn, battery visible, creator points to bio.</p>
+<p><strong>Voiceover:</strong> “Link in bio for the current Greenworks offer.”</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="block warn" aria-labelledby="warn-title">
+      <h2 class="section-title" id="warn-title">⚠️ What to Fix</h2>
+      <div class="conclusion">This is a Type D asset: 0.000% order conversion rate, which is in the below passing tier, and the video underperformed on both reach and commerce because it neither earned strong top-of-funnel attention nor translated product interest into buying intent.</div>
+      <div class="cards">
+        <div class="card">
+          <h3>Conversion Diagnosis · Priority Actions</h3>
+          <ol>
+            <li>Rework the creative from the first frame because the current opening is too weak to earn distribution: remove the black frame, start with the most satisfying trimming or edging result, and lead with a homeowner outcome instead of the product name.</li>
+            <li>Rebuild the sales logic so the viewer understands why this specific tool is worth buying: add one concrete decision-driving reason such as battery vs. gas convenience, runtime, noise reduction, or ease of use, and pair it with visible proof in the footage.</li>
+            <li>Tighten creator qualification for future iterations based on whether they can sell, not just whether they match the niche: this creator appears category-relevant, so one remake is justified, but if the next version still cannot improve hook strength, trust signals, and CTA clarity, the partnership should not be scaled.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>Creator Feedback</h3>
+        <p>You’re a good fit for the tools category, and the strongest parts of this video are the real yard-use footage and the natural way you talk about the product. The issue is less about your presence and more about how the video is built for TikTok and for conversion. The best moments are when the tool is actively cutting and when the result is visually satisfying, so those need to come first. In the next version, open immediately on the strongest edging or trimming shot, show a messier before-state, and frame the first line around the homeowner result instead of the model name. Then add one clear reason this tool beats the alternative, like no gas smell, less noise, or easier upkeep, and close with a specific reason to click instead of a generic link-in-bio CTA. One remake makes sense here, but it needs to be treated as a conversion-focused rebuild, not a light edit.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
