@@ -33,11 +33,18 @@ GitHub Pages: https://allilady.github.io/viral-scope-ai/
 
 | 指标 | 结果 |
 |---|---|
-| 已验证案例数 | 2 条 |
-| video1 单次处理耗时 | 311.3 秒（实测运行 `main.py + diagnose.py`） |
+| 已验证案例数 | 4 条 |
+| 单条处理耗时 | 30 秒左右的视频约 120 秒；更长视频会随抽帧数量和 API 响应时间增加 |
 | 输出内容 | 英文 AI 拆解报告、英文转化诊断、GitHub Pages 展示页 |
 
 分类诊断使用订单转化率 `orders / views` 作为核心口径：`0.05%` 为行业及格线，`0.1%` 为优秀线，`0.3%` 以上为爆款/神仙线。
+
+| Case | 实测分类 | 转化率档位 |
+|---|---|---|
+| video1 | B 类：高播放低转化 | 0.000%，below passing |
+| video2 | A 类：高播放高转化 | 0.098%，passing |
+| video3 | C 类：低播放但转化尚可 | 0.091%，passing |
+| video4 | D 类：双低 | 0.000%，below passing |
 
 ## Tech Stack
 
