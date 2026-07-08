@@ -246,3 +246,11 @@
 
 - 公开仓库前需确认 `.git` 历史已重建或清洗，避免旧提交里保留本地私有配置。
 - 英文报告已用新版 API prompt 重跑；GitHub Pages 展示副本位于 `docs/`。
+
+### README 重构
+
+- `README.md` 已按 Problem / Solution / Architecture / Demo / Results / Tech Stack / Setup 结构重写。
+- Solution 已明确定位为本地 AI 复盘 workflow，并保留「AI辅助判断、不替代筛选」。
+- Architecture 已改为 Mermaid 流程图，Demo 已写入 GitHub Pages 线上链接和 video1 / video2 两个案例。
+- Problem 已补充双低案例占复盘大头、消耗样品预算/复盘时间，以及爆款经验难以复刻到脚本、品牌账号或渠道号达人账号。
+- Results 已记录已验证案例数 2 条；`video1` 的 `main.py + diagnose.py` 完整实测耗时为 311.3 秒。

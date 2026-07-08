@@ -1,25 +1,56 @@
 # ViralScope AI
 
-面向跨境电商 / 出海达人运营的本地 AI 复盘工作流：人工挑出值得拆解的热点视频后，脚本自动抽帧、用 AI 生成结构化「爆款拆解报告」和「转化诊断」，最后汇成一页可分享的展示页。
+## Problem
 
-AI 分析产出（爆款拆解报告、转化诊断、展示页）统一为英文，可直接发给海外达人；本仓库的说明文档用中文，方便运营阅读。
+爆款拆解长期依赖人工复盘，效率低，判断标准也不统一。
 
-## 流程
+高播放低转化和双低视频难以快速定位问题，双低案例又占复盘大头，持续消耗达人样品预算和复盘时间；同时，团队也很难把爆款经验稳定复刻到脚本、品牌账号或渠道号达人账号。
 
+## Solution
+
+ViralScope AI 是一个本地 AI 复盘 workflow：人工筛选值得分析的视频样本，脚本自动抽帧、生成 AI 结构化拆解，并基于播放量与订单转化率做转化诊断分类判断；AI辅助判断、不替代筛选。
+
+## Architecture
+
+```mermaid
+flowchart TD
+    A[人工筛选视频 + 填写基础信息] --> B[main.py 三段式抽帧]
+    B --> C[AI结构化拆解 report_openai.md]
+    C --> D[diagnose.py 分类诊断]
+    D --> E[generate_showcase.py 展示页]
 ```
-samples/<name>.mp4 + <name>.json
-        │
-        ▼
-  main.py ── 抽帧 ─▶ 时间轴报告 ─▶ AI 爆款拆解 (report_openai.md)
-        │
-        ▼
-  diagnose.py ─▶ 转化诊断 (diagnosis.md)
-        │
-        ▼
-  generate_showcase.py ─▶ 展示页 (showcase.html)
-```
 
-## 环境准备
+## Demo
+
+GitHub Pages: https://allilady.github.io/viral-scope-ai/
+
+| Demo | 类型说明 | 链接 |
+|---|---|---|
+| video1 | B 类：高播放低转化，适合定位信任、卖点和行动引导断点。 | https://allilady.github.io/viral-scope-ai/video1/showcase.html |
+| video2 | A 类：高播放高转化，适合提炼可复用的带货内容结构。 | https://allilady.github.io/viral-scope-ai/video2/showcase.html |
+
+## Results
+
+| 指标 | 结果 |
+|---|---|
+| 已验证案例数 | 2 条 |
+| video1 单次处理耗时 | 311.3 秒（实测运行 `main.py + diagnose.py`） |
+| 输出内容 | 英文 AI 拆解报告、英文转化诊断、GitHub Pages 展示页 |
+
+分类诊断使用订单转化率 `orders / views` 作为核心口径：`0.05%` 为行业及格线，`0.1%` 为优秀线，`0.3%` 以上为爆款/神仙线。
+
+## Tech Stack
+
+| 模块 | 技术 |
+|---|---|
+| Runtime | Python |
+| AI 调用 | OpenAI-compatible Chat Completions API |
+| 视频抽帧 | ffmpeg / ffprobe |
+| HTTP 请求 | requests |
+| 展示页 | Static HTML / CSS |
+| 在线发布 | GitHub Pages (`docs/`) |
+
+## Setup
 
 ```bash
 pip install -r requirements.txt        # 依赖：requests
@@ -29,7 +60,7 @@ export OPENAI_API_KEY=sk-...            # Windows PowerShell: $env:OPENAI_API_KE
 
 系统需要 `ffmpeg` / `ffprobe`（优先用 PATH 里的；Windows 下也可回退到 `ffmpeg-bin/` 本地构建）。
 
-## 运行
+## Run
 
 ```bash
 python main.py <video_name>                # 抽帧 + 时间轴 + AI 拆解
@@ -39,7 +70,7 @@ python generate_showcase.py <video_name>   # 生成展示页
 
 `<video_name>` 对应 `samples/<video_name>.mp4` 和 `samples/<video_name>.json`。
 
-## 输出文件
+## Outputs
 
 | 文件 | 说明 |
 |---|---|
@@ -51,38 +82,6 @@ python generate_showcase.py <video_name>   # 生成展示页
 
 `outputs/` 为生成产物，不纳入版本控制。
 
-## GitHub Pages 发布
-
-仓库已准备 `docs/` 作为 GitHub Pages 静态站点目录：
-
-| 路径 | 说明 |
-|---|---|
-| `docs/index.html` | Demo 入口页，链接到 video1 / video2 |
-| `docs/video1/showcase.html` | video1 展示页副本 |
-| `docs/video1/frames/` | video1 展示页引用的关键帧 |
-| `docs/video2/showcase.html` | video2 展示页副本 |
-| `docs/video2/frames/` | video2 展示页引用的关键帧 |
-
-首次推送到 GitHub：
-
-```bash
-git remote remove origin
-git remote add origin https://github.com/<your-user>/viral-scope-ai.git
-git push -u origin master
-```
-
-如果希望使用 `main` 分支：
-
-```bash
-git branch -M main
-git push -u origin main
-```
-
-GitHub Pages 设置：
-
-1. 打开仓库 `Settings -> Pages`。
-2. `Source` 选择 `Deploy from a branch`。
-3. `Branch` 选择 `master` 或 `main`，目录选择 `/docs`。
-4. 保存后访问 `https://<your-user>.github.io/viral-scope-ai/`。
+## GitHub Pages Update
 
 更新在线展示页时，先重跑脚本，再把 `outputs/<name>/showcase.html` 和页面引用的 `frames/*.jpg` 同步到 `docs/<name>/`，随后提交并推送。
